@@ -5,12 +5,27 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
+    <header>
+      <nav>
+        <ul>
+          <li><%= button_to "Home", root_path , method: :get%></li>
+          <% if false %>
+            <li><%= button_to "Flights", flights_path , method: :get%></li>
+            <li><%= button_to "Bookings", bookings_path , method: :get%></li>
+          <% end %>
+          <% if user_signed_in? %>
+            <li><%= button_to "Logout", destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li><%= button_to "Login", new_user_session_path , method: :get%></li>
+            <li><%= button_to "Sign up", new_user_registration_path , method: :get %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </header>
     <%= yield %>
   </body>
 </html>
