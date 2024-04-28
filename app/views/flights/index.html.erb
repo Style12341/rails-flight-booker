@@ -1,0 +1,40 @@
+<%= form_with url: root_path , method: :get do |form| %>
+  <%= form.label :departure_airport_id , "Select Departure Airpirt code" %>
+  <%= form.collection_select :departure_airport_id , @airports.order(:code), :id , :code %>
+  <%= form.label :arrival_airport_id , "Select Arrival Airpirt code" %>
+  <%= form.collection_select :arrival_airport_id , @airports.order(:code), :id , :code %>
+  <%= form.label :number_passangers , "Select number of passangers:" %>
+  <%= form.number_field :number_passangers , in: 1..4, value: 1%>
+  <%= form.label :departure_date , "Select Departure Date" %>
+  <%= form.select :departure_date, options_for_select(@flights.dates.map{|d| d.departure_date.strftime("%d/%m/%y")}.uniq,@flights.dates.first.departure_date) %>
+  <%= form.submit "Search Flights" %>
+<% end %>
+<% if @searched %>
+  <h2>Flights from <%= @departure_airport.code %> to <%= @arrival_airport.code %> on <%= @departure_date.to_datetime.strftime("%d/%m/%y") %> for <%= @number_passangers %> passangers</h2>
+  <% if @search_results.empty? %>
+    <h3>No flights found</h3>
+  <% else %>
+    <table>
+      <thead>
+        <tr>
+          <th>Flight Number</th>
+          <th>Departure Date</th>
+          <th>Departure Time</th>
+          <th>Arrival Time</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @search_results.each do |flight| %>
+          <tr>
+            <td><%= flight.id %></td>
+            <td><%= flight.departure_date.strftime("%d/%m/%y") %></td>
+            <td><%= flight.departure_time %></td>
+            <td><%= flight.arrival_time %></td>
+            <td><%= flight.duration %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
