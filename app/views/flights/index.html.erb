@@ -3,8 +3,8 @@
   <%= form.collection_select :departure_airport_id , @airports.order(:code), :id , :code %>
   <%= form.label :arrival_airport_id , "Select Arrival Airpirt code" %>
   <%= form.collection_select :arrival_airport_id , @airports.order(:code), :id , :code %>
-  <%= form.label :number_passangers , "Select number of passangers:" %>
-  <%= form.number_field :number_passangers , in: 1..4, value: 1%>
+  <%= form.label :passanger_count , "Select number of passangers:" %>
+  <%= form.number_field :passanger_count , in: 1..4, value: 1%>
   <%= form.label :departure_date , "Select Departure Date" %>
   <%= form.select :departure_date, options_for_select(@flights.dates.map{|d| d.departure_date.strftime("%d/%m/%y")}.uniq,@flights.dates.first.departure_date) %>
   <%= form.submit "Search Flights" %>
@@ -16,7 +16,7 @@
   <% else %>
     <%= form_with url: new_booking_path , method: :get do |form|%>
       <%= form.collection_radio_buttons :flight_id, @search_results, :id, :display_flight %>
-      <%= form.hidden_field :number_passangers, value: @number_passangers %>
+      <%= form.hidden_field :passanger_count, value: @passanger_count %>
       <br>
       <%= form.submit "Book selected flight" %>
     <% end %>
