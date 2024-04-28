@@ -8,11 +8,9 @@ class FlightsController < ApplicationController
     return unless params[:commit] == 'Search Flights'
     puts "\nSearch Flights"
     @search_results = Flight.search(params[:departure_airport_id], params[:arrival_airport_id],
-                                    params[:departure_date].to_date)
+                                    params[:departure_date])
     @searched = true
-    @departure_date = params[:departure_date]
-    @departure_airport = Airport.find(params[:departure_airport_id])
-    @arrival_airport = Airport.find(params[:arrival_airport_id])
+    @passanger_count = params[:passanger_count]
     render :index
   end
 

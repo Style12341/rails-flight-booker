@@ -9,32 +9,16 @@
   <%= form.select :departure_date, options_for_select(@flights.dates.map{|d| d.departure_date.strftime("%d/%m/%y")}.uniq,@flights.dates.first.departure_date) %>
   <%= form.submit "Search Flights" %>
 <% end %>
+<br>
 <% if @searched %>
-  <h2>Flights from <%= @departure_airport.code %> to <%= @arrival_airport.code %> on <%= @departure_date.to_datetime.strftime("%d/%m/%y") %> for <%= @number_passangers %> passangers</h2>
   <% if @search_results.empty? %>
     <h3>No flights found</h3>
   <% else %>
-    <table>
-      <thead>
-        <tr>
-          <th>Flight Number</th>
-          <th>Departure Date</th>
-          <th>Departure Time</th>
-          <th>Arrival Time</th>
-          <th>Duration</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @search_results.each do |flight| %>
-          <tr>
-            <td><%= flight.id %></td>
-            <td><%= flight.departure_date.strftime("%d/%m/%y") %></td>
-            <td><%= flight.departure_time %></td>
-            <td><%= flight.arrival_time %></td>
-            <td><%= flight.duration %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= form_with url: new_booking_path , method: :get do |form|%>
+      <%= form.collection_radio_buttons :flight_id, @search_results, :id, :display_flight %>
+      <%= form.hidden_field :number_passangers, value: @number_passangers %>
+      <br>
+      <%= form.submit "Book selected flight" %>
+    <% end %>
   <% end %>
 <% end %>
